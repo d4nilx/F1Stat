@@ -1,4 +1,3 @@
-import fastf1
 import fastf1.plotting
 import matplotlib.pyplot as plt
 import numpy as np
@@ -31,9 +30,18 @@ def plot_track_speed(session, driver):
     ])
     norm = plt.Normalize(all_speeds.min(), all_speeds.max())
 
-    fig, ax = plt.subplots(figsize=(12, 8))
-    ax.set_facecolor('black')
-    fig.patch.set_facecolor('black')
+            x = tel['X'].values
+            y = tel['Y'].values
+            speed = tel['Speed'].values
+
+            points = np.array([x, y]).T.reshape(-1, 1, 2)
+            segments = np.concatenate([points[:-1], points[1:]], axis=1)
+
+            ax.set_facecolor('black')
+            norm = plt.Normalize(speed.min(), speed.max())
+            lc = LineCollection(segments, cmap='RdYlGn', norm=norm, linewidth=3)
+            lc.set_array(speed)
+            ax.add_collection(lc)
 
     for _, tel in driver_telemetry:
         x = tel['X'].values
@@ -47,10 +55,9 @@ def plot_track_speed(session, driver):
         lc.set_array(speed[:-1])
         ax.add_collection(lc)
 
-    cbar = fig.colorbar(lc, ax=ax)
-    cbar.set_label('Speed (km/h)', color='white')
-    cbar.ax.yaxis.set_tick_params(color='white')
-    plt.setp(cbar.ax.yaxis.get_ticklabels(), color='white')
+            ax.autoscale()
+            ax.axis('off')
+            ax.set_title(f'{driver}', color='white', fontsize=14)
 
     ax.autoscale()
     ax.axis('off')
@@ -60,5 +67,9 @@ def plot_track_speed(session, driver):
         color='white', fontsize=14
     )
 
+    fig.suptitle(
+        f'{session.event["EventName"]} {session.event.year} — Speed comparison',
+        color='white', fontsize=16
+    )
     plt.tight_layout()
     plt.show()
