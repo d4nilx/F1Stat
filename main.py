@@ -4,8 +4,14 @@ from visualization.charts import plot_positions, plot_pitstops
 from visualization.track_map import plot_track_speed
 
 def get_drivers_input():
-    drivers = input("Enter drivers: ")
-    return [d.strip().upper() for d in drivers.split(',')]
+    while True:
+        drivers = input("Enter 2 to 4 drivers, separated by commas: ")
+        drivers = list(dict.fromkeys(
+            d.strip().upper() for d in drivers.split(',') if d.strip()
+        ))
+        if 2 <= len(drivers) <= 4:
+            return drivers
+        print("Please enter between 2 and 4 different driver abbreviations.")
 
 def main():
     print("=== F1 Stat ===")
