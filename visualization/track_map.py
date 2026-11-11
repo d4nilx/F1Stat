@@ -108,5 +108,6 @@ def plot_track_speed(session, driver):
         f'{session.event["EventName"]} {session.event.year} — Fastest by section: {driver_names}',
         color='white', fontsize=14
     )
+
     plt.tight_layout()
     plt.show()

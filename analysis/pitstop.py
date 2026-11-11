@@ -10,6 +10,8 @@ def get_pitstop_analysis(session):
         laps['PreviousPitInTime'].notna(), laps['LapNumber']
     )
 
+    laps['CompoundAfterStop'] = laps.groupby('Driver')['Compound'].shift(-1)
+
     pitstops = laps[laps['PitOutTime'].notna()][
         ['Driver', 'PitInLap', 'Compound', 'PitInTimeForStop', 'PitOutTime']
     ].copy()

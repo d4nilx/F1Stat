@@ -24,6 +24,14 @@ def plot_positions(session):
     plt.tight_layout()
     plt.show()
 
+COMPOUND_COLORS = {
+    'SOFT': '#FF3333',
+    'MEDIUM': '#FFD700',
+    'HARD': '#FFFFFF',
+    'INTERMEDIATE': '#39B54A',
+    'WET': '#0067FF',
+    'UNKNOWN': '#888888'
+}
 def plot_pitstops(session, pitstops):
     green_stops = pitstops[pitstops['StopType'] == 'Green Flag'].copy()
     other_stops = pitstops[pitstops['StopType'] != 'Green Flag'].copy()
